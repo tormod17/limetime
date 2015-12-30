@@ -1,3 +1,5 @@
+MemoryStore = [];
+
 var app = {
 
     registerEvents: function() {
@@ -10,56 +12,80 @@ var app = {
         });
     },
 
+
+    getFirebase: function() {
+
+        var firebaseDb = new Firebase("https://limetime.firebaseio.com/");
+        var MemoryStore = [];
+
+        firebaseDb.on('value', function(snapshot) {
+            MemoryStore = snapshot.val();
+            console.log(MemoryStore);
+            return MemoryStore;
+
+        });
+
+    },
+
     initialize: function() {
         var self = this;
         this.detailsURL = /^#employees\/(\d{1,})/;
-        this.registerEvents();
-
+        //this.registerEvents();
         self.renderHomeView();
 
 
     },
 
-    renderHomeView: function() {
-         var html =
+    renderHomeView: function(err, callback) {
+
+        var firebaseDb = new Firebase("https://limetime.firebaseio.com/");
+       
+
+        firebaseDb.on('value', function(snapshot) {
+            MemoryStore = snapshot.val();
+            console.log(MemoryStore);
+          
+            var html =
+                "<div class='header'><h1>Lime Time</h1>" +
+                "<div><button onclick='app.renderAddEvent()'>Add Event</button></div>" +
+                "<div>" +
+                "<ul class='menuButtons'><li><a>This Week</a></li>" +
+                "<li><a>This Weekend</a></li>" +
+                "<li><a>The future </a></li>" +
+                "</ul>";
+            MemoryStore.forEach(function(event) {
+                html +=
+                    '<ul>' +
+                    '<li>' + event.eventName + '<li>' +
+                    '<li>' + event.address + '</li>' +
+                    '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
+                    '</ul>';
+            });
+            html += "</div>";
+            $('body').html(html);
+
+        });
+    },
+
+    renderEvent: function() {
+
+        var html =
             "<div class='header'><h1>Lime Time</h1>" +
             "<div><button onclick='app.renderAddEvent()'>Add Event</button></div>" +
             "<div>" +
             "<ul class='menuButtons'><li><a>This Week</a></li>" +
             "<li><a>This Weekend</a></li>" +
             "<li><a>The future </a></li>" +
-            "</ul>";
-        MemoryStore.forEach(function(event) {
-            html +=
-                '<ul>' +
-                '<li>' + event.eventName + '<li>' +
-                '<li>' + event.area + '</li>' +
-                '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
-                '</ul>';
-        });
-        html += "</div>";
-        $('body').html(html);
-    },
-
-    renderEvent: function(){
-
-        var html = 
-           "<div class='header'><h1>Lime Time</h1>" +
-            "<div><button onclick='app.renderAddEvent()'>Add Event</button></div>" +
-            "<div>" +
-            "<ul class='menuButtons'><li><a>This Week</a></li>" +
-            "<li><a>This Weekend</a></li>" +
-            "<li><a>The future </a></li>" +
-            "</ul>"+
-            "<div class=' eventWrapper'>"+
-            "<h3>"+ MemoryStore[0].eventName + "</h3>"+
-            "<img src='http://blog.nomorefashionvictims.com/wp-content/uploads/2013/01/phagwa.jpg' alt='partyPic' width='100px' height='100px'>"+
-                '<ul>' +
-                 '<li>' + MemoryStore[0].eventName + '<li>' +
-                 '<li>' + MemoryStore[0].area + '</li>' +
-                '</ul>'+
+            "</ul>" +
+            "<div class=' eventWrapper'>" +
+            "<h3>" + MemoryStore[0].eventName + "</h3>" +
+            "<img src='http://blog.nomorefashionvictims.com/wp-content/uploads/2013/01/phagwa.jpg' alt='partyPic' width='250px' height='250px'>" +
+            '<ul>' +
+            '<li>' + MemoryStore[0].eventName + '<li>' +
+            '<li>' + MemoryStore[0].address + '</li>' +
+            '</ul>' +
             "</div>";
-            $('body').html(html);
+        $('body').html(html);
     },
 
     renderAddEvent: function() {
@@ -72,28 +98,28 @@ var app = {
             '<form role="form">' +
             '<label for="EventName">Event Name</label>' +
             '<input type="text id="eventName" placeholder="Event Name">' +
-            '<br>'+
+            '<br>' +
             '<label for="Address">Address</label>' +
             '<input type="text id="address" placeholder="address">' +
-            '<br>'+
+            '<br>' +
             '<label for="Music">Music</label>' +
             '<input type="text id="music" placeholder="music">' +
-            '<br>'+
-           '<label for="door policy">door policy</label>' +
+            '<br>' +
+            '<label for="door policy">door policy</label>' +
             '<input type="text id="doorPolicy" placeholder="door policy">' +
-            '<br>'+
+            '<br>' +
             '<label for="price">price</label>' +
             '<input type="text id="price" placeholder="price">' +
-            '<br>'+
+            '<br>' +
             '<label for="host">host</label>' +
             '<input type="text id="host" placeholder="host">' +
-            '<br>'+
+            '<br>' +
             '<label for="cellPhone">cellPhone</label>' +
             '<input type="text id="cellPhone" placeholder="cellPhone">' +
-            '<br>'+
+            '<br>' +
             '<label for="email">email</label>' +
             '<input type="text id="email" placeholder="email">' +
-            '<br>'+
+            '<br>' +
             '<input type="submit">' +
             '</form>';
 

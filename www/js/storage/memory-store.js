@@ -1,4 +1,22 @@
-var MemoryStore = 
+db = {
+
+    getFirebase: function() {
+
+        var firebaseDb = new Firebase("https://limetime.firebaseio.com/");
+        var MemoryStore = [];
+
+        firebaseDb.on('value', function(snapshot) {
+            MemoryStore = snapshot.val();
+            console.log(MemoryStore);
+            return MemoryStore;
+
+        });
+
+    }
+};
+
+
+/*var MemoryStore = 
  [
             {"id": 1, "eventName": "Smokey & Buntys", "lastName": "Howard", "music":"Vice President, North East", "managerId": 0, "area":"New York, NY", "cellPhone":"212-999-8888", "officePhone":"212-999-8887", "email":"ryan@dundermifflin.com"},
             {"id": 2, "eventName": "Shakers", "lastName": "Scott", "music":"Regional Manager", "managerId": 1, "area":"Scranton, PA", "cellPhone":"570-865-2536", "officePhone":"570-123-4567", "email":"michael@dundermifflin.com"},
@@ -18,7 +36,7 @@ var MemoryStore =
         ];
 
 
-
+*/
 
 
 
