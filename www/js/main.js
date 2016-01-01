@@ -36,22 +36,21 @@ var app = {
 
     },
 
-    renderHomeView: function(err, callback) {
+    renderHomeView: function() {
 
         var firebaseDb = new Firebase("https://limetime.firebaseio.com/");
-       
 
         firebaseDb.on('value', function(snapshot) {
             MemoryStore = snapshot.val();
             console.log(MemoryStore);
-          
+
             var html =
                 "<div class='header'><h1>Lime Time</h1>" +
                 "<div><button onclick='app.renderAddEvent()'>Add Event</button></div>" +
                 "<div>" +
-                "<ul class='menuButtons'><li><a>This Week</a></li>" +
-                "<li><a>This Weekend</a></li>" +
-                "<li><a>The future </a></li>" +
+                "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
+                "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
+                "<li><button onclick='app.future()'>The future </a></li>" +
                 "</ul>";
             MemoryStore.forEach(function(event) {
                 html +=
@@ -67,11 +66,109 @@ var app = {
         });
     },
 
+    sortByTimeFunction : function(a,b){
+                    var dateA = new Date(a.dateTime).getTime();
+                    var dateB = new Date(b.dateTime).getTime();
+                    return dateA > dateB ? 1 : -1;
+
+    },
+
+    thisWk: function() {
+                MemoryStore.sort(this.sortByTimeFunction);
+                console.log('WK',MemoryStore);
+
+                var thisWk = MemoryStore.slice(0,7);
+
+                var html =
+                "<div class='header'><h1>Lime Time</h1>" +
+                "<div>"+
+                "<button onclick='app.renderHomeView()'>Back</button>" +
+                "<div>" +
+                "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
+                "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
+                "<li><button onclick='app.future()'>The future </a></li>" +
+                "</ul>";
+
+                thisWk.forEach(function(event){
+                    html +=
+                    '<ul>' +
+                    '<li>' + event.eventName + '<li>' +
+                    '<li>' + event.address + '</li>' +
+                    '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
+                    '</ul>';
+                });
+               html += "</div>";
+               $('body').html(html);
+    },
+
+    thisWknd: function() {
+          MemoryStore.sort(this.sortByTimeFunction);
+          var thisWk = MemoryStore.slice(0,7);
+          var wknd= thisWk.filter(function(event){
+             // var day = new Date(event.dateTime).getDay();
+              return  event.dateTime.indexOf('FRI') > -1 || event.dateTime.indexOf('SAT') > -1 || event.dateTime.indexOf('SUN') > -1;
+          });
+          
+                var html =
+                "<div class='header'><h1>Lime Time</h1>" +
+                "<div>"+
+                "<button onclick='app.renderHomeView()'>Back</button>" +
+                "<div>" +
+                "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
+                "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
+                "<li><button onclick='app.future()'>The future </a></li>" +
+                "</ul>";
+
+                wknd.forEach(function(event){
+                    html +=
+                    '<ul>' +
+                    '<li>' + event.eventName + '<li>' +
+                    '<li>' + event.address + '</li>' +
+                    '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
+                    '</ul>';
+                });
+               html += "</div>";
+               $('body').html(html);
+
+
+
+
+
+    },
+
+    future: function() {
+         MemoryStore.sort(this.sortByTimeFunction);
+         var future = MemoryStore.slice(7);
+         console.log('future',future);
+         var html =
+                "<div class='header'><h1>Lime Time</h1>" +
+                "<div>"+
+                "<button onclick='app.renderHomeView()'>Back</button>" +
+                "<div>" +
+                "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
+                "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
+                "<li><button onclick='app.future'>The future </a></li>" +
+                "</ul>";
+
+                future.forEach(function(event){
+                    html +=
+                    '<ul>' +
+                    '<li>' + event.eventName + '<li>' +
+                    '<li>' + event.address + '</li>' +
+                    '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
+                    '</ul>';
+                });
+               html += "</div>";
+               $('body').html(html);
+
+
+    },
+
     renderEvent: function() {
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
-            "<div><button onclick='app.renderAddEvent()'>Add Event</button></div>" +
+            "<div><button onclick='app.renderHomeView()''>Back</button></a></div>" +
             "<div>" +
             "<ul class='menuButtons'><li><a>This Week</a></li>" +
             "<li><a>This Weekend</a></li>" +
