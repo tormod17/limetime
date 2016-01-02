@@ -39,7 +39,9 @@ li a:hover:not(.active) {
 
 form input {
     margin:1em;
+}
 
-
-
+.eventDisplay > li { 
+    display: block;
+    position: relative;
 }

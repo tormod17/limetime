@@ -20,7 +20,6 @@ var app = {
 
         firebaseDb.on('value', function(snapshot) {
             MemoryStore = snapshot.val();
-            console.log(MemoryStore);
             return MemoryStore;
 
         });
@@ -42,7 +41,6 @@ var app = {
 
         firebaseDb.on('value', function(snapshot) {
             MemoryStore = snapshot.val();
-            console.log(MemoryStore);
 
             var html =
                 "<div class='header'><h1>Lime Time</h1>" +
@@ -51,12 +49,15 @@ var app = {
                 "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
                 "<li><button onclick='app.renderAll()()'>All </a></li>" +
                 "</ul>";
-            MemoryStore.forEach(function(event) {
+            Object.keys(MemoryStore).forEach(function(event){
+
+
+            
                 html +=
                     '<ul>' +
-                    '<li>' + event.eventName + '<li>' +
-                    '<li>' + event.address + '</li>' +
-                    '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
+                    '<li>' + MemoryStore[event].eventName + '<li>' +
+                    '<li>' + MemoryStore[event].address + '</li>' + 
+                    '<li><a class="infoButton" onclick="app.renderEvent('+event+')">Info</a></li>' +
                     '</ul>';
 
             });
@@ -66,7 +67,7 @@ var app = {
         });
     },
 
-    sortByTimeFunction: function(a, b) {
+    sortByTimeFunction: function(a, b) {    
         var dateA = new Date(a.dateTime).getTime();
         var dateB = new Date(b.dateTime).getTime();
         return dateA > dateB ? 1 : -1;
@@ -74,10 +75,9 @@ var app = {
     },
 
     thisWk: function() {
-        MemoryStore.sort(this.sortByTimeFunction);
-        console.log('WK', MemoryStore);
+        Object.keys(MemoryStore).sort(this.sortByTimeFunction);
 
-        var thisWk = MemoryStore.slice(0, 7);
+        var thisWk = Object.keys(MemoryStore).slice(0, 7);
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
@@ -89,25 +89,28 @@ var app = {
             "<li><button onclick='app.renderAll()'>All </a></li>" +
             "</ul>";
 
-        thisWk.forEach(function(event) {
+        thisWk.forEach(function(event){
             html +=
                 '<ul>' +
-                '<li>' + event.eventName + '<li>' +
-                '<li>' + event.address + '</li>' +
-                '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
+                '<li>' + MemoryStore[event].eventName + '<li>' +
+                '<li>' + MemoryStore[event].address + '</li>' +
+                '<li><a class="infoButton" onclick="app.renderEvent('+event+')">Info</a></li>' +
                 '</ul>';
-        });
+        }); 
         html += "</div>";
         $('body').html(html);
     },
 
     thisWknd: function() {
-        MemoryStore.sort(this.sortByTimeFunction);
-        var thisWk = MemoryStore.slice(0, 7);
-        var wknd = thisWk.filter(function(event) {
-            // var day = new Date(event.dateTime).getDay();
-            return event.dateTime.indexOf('Fri') > -1 || event.dateTime.indexOf('Sat') > -1 || event.dateTime.indexOf('Sun') > -1;
-        });
+        Object.keys(MemoryStore).sort(this.sortByTimeFunction);
+
+        var thisWk = Object.keys(MemoryStore).slice(0, 7);
+
+        var wknd =thisWk.filter(function(event){
+
+             return MemoryStore[event].dateTime.indexOf('Fri') > -1 || MemoryStore[event].dateTime.indexOf('Sat') > -1 || MemoryStore[event].dateTime.indexOf('Sun') > -1 ;
+  
+         });
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
@@ -119,12 +122,12 @@ var app = {
             "<li><button onclick='app.renderAll()()'>All </a></li>" +
             "</ul>";
 
-        wknd.forEach(function(event) {
+        wknd.forEach(function(event){
             html +=
                 '<ul>' +
-                '<li>' + event.eventName + '<li>' +
-                '<li>' + event.address + '</li>' +
-                '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
+                '<li>' + MemoryStore[event].eventName + '<li>' +
+                '<li>' + MemoryStore[event].address + '</li>' +
+                '<li><a class="infoButton" onclick="app.renderEvent('+event+')">Info</a></li>' +
                 '</ul>';
         });
         html += "</div>";
@@ -137,7 +140,7 @@ var app = {
     },
 
     renderAll: function() {
-        MemoryStore.sort(this.sortByTimeFunction);
+        Object.keys(MemoryStore).sort(this.sortByTimeFunction);
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
@@ -149,21 +152,21 @@ var app = {
             "<li><button onclick='app.renderAll()'>All </a></li>" +
             "</ul>";
 
-        MemoryStore.forEach(function(event) {
+        for ( var event in MemoryStore) {
             html +=
                 '<ul>' +
-                '<li>' + event.eventName + '<li>' +
-                '<li>' + event.address + '</li>' +
+                '<li>' + MemoryStore[event].eventName + '<li>' +
+                '<li>' + MemoryStore[event].address + '</li>' +
                 '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
                 '</ul>';
-        });
+        }
         html += "</div>";
         $('body').html(html);
 
 
     },
 
-    renderEvent: function() {
+    renderEvent: function(event) {
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
@@ -174,11 +177,13 @@ var app = {
             "<li><a>All </a></li>" +
             "</ul>" +
             "<div class=' eventWrapper'>" +
-            "<h3>" + MemoryStore[0].eventName + "</h3>" +
+            "<h3>" + MemoryStore[event].eventName + "</h3>" +
             "<img src='http://blog.nomorefashionvictims.com/wp-content/uploads/2013/01/phagwa.jpg' alt='partyPic' width='250px' height='250px'>" +
-            '<ul>' +
-            '<li>' + MemoryStore[0].eventName + '<li>' +
-            '<li>' + MemoryStore[0].address + '</li>' +
+            '<ul class="eventDisplay">' +
+            '<li>' + MemoryStore[event].eventName + '</li>' +
+            '<li>' + MemoryStore[event].address + '</li>' +
+            '<li>' + MemoryStore[event].music + '</li>' +
+            '<li>' + MemoryStore[event].price + '</li>' +
             '</ul>' +
             "</div>";
         $('body').html(html);
@@ -248,7 +253,7 @@ var app = {
             'dateTime': 'Fri Jan 1 2015 19:30:10',  //new Date(),
             'email': email
 
-        }, console.log('sending'));
+        }, console.log('sending to DB'));
 
     },
 
@@ -256,20 +261,6 @@ var app = {
 
 
     },
-
-    showAlert: function(message, title) {
-        if (navigator.notification) {
-            navigator.notification.alert(
-                message,
-                null, // callback
-                title,
-                'OK' // Button label
-            );
-        } else {
-            alert(title + ": " + message);
-        }
-    },
-
 
     slidePage: function(page) {
 
