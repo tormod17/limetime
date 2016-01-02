@@ -106,7 +106,7 @@ var app = {
         var thisWk = MemoryStore.slice(0, 7);
         var wknd = thisWk.filter(function(event) {
             // var day = new Date(event.dateTime).getDay();
-            return event.dateTime.indexOf('FRI') > -1 || event.dateTime.indexOf('SAT') > -1 || event.dateTime.indexOf('SUN') > -1;
+            return event.dateTime.indexOf('Fri') > -1 || event.dateTime.indexOf('Sat') > -1 || event.dateTime.indexOf('Sun') > -1;
         });
 
         var html =
