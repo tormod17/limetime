@@ -245,7 +245,7 @@ var app = {
             'price': price,
             'host': host,
             'cellPhone': cellPhone,
-            'dateTime': new Date(),
+            'dateTime': 'Fri Jan 1 2015 19:30:10',  //new Date(),
             'email': email
 
         }, console.log('sending'));
