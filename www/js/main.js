@@ -47,7 +47,7 @@ var app = {
                 "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
                 "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
                 "<li><button onclick='app.renderAll()'>All </a></li>" +
-                "<li><button onclick='app.renderAddEvent()'>Add</button></li>"+
+            
                 "</ul>"+
                 "</div>"+
                 "<div class='listWrapper'>";
@@ -59,12 +59,12 @@ var app = {
                     '<ul>' +
                     '<li>' + MemoryStore[event].eventName + '<li>' +
                     '<li>' + MemoryStore[event].address + '</li>' + 
-                    '<li>' + MemoryStore[event].dateTime.slice(0,5) + '</li>' + 
+                    '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' + 
                     '<li> <a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" > Info</a></li>' +
                     '</ul>';
 
             });
-            html += "</div>";
+            html += "<button onclick='app.renderAddEvent()'>Add</button></div>";
             $('body').html(html);
 
         });
@@ -98,7 +98,7 @@ var app = {
                 '<ul>' +
                 '<li>' + MemoryStore[event].eventName + '<li>' +
                 '<li>' + MemoryStore[event].address + '</li>' +
-                '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' + 
+                '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' + 
 
                 '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                 '</ul>';
@@ -136,7 +136,7 @@ var app = {
                 '<ul>' +
                 '<li>' + MemoryStore[event].eventName + '<li>' +
                 '<li>' + MemoryStore[event].address + '</li>' +
-                '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' + 
+                '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' + 
 
                 '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                 '</ul>';
