@@ -59,8 +59,8 @@ var app = {
                     '<ul>' +
                     '<li>' + MemoryStore[event].eventName + '<li>' +
                     '<li>' + MemoryStore[event].address + '</li>' + 
-                    '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' + 
-                    '<li> <a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
+                    '<li>' + MemoryStore[event].dateTime.slice(0,5) + '</li>' + 
+                    '<li> <a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" > Info</a></li>' +
                     '</ul>';
 
             });
