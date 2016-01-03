@@ -44,11 +44,13 @@ var app = {
 
             var html =
                 "<div class='header'><h1>Lime Time</h1>" +
-                "<div>" +
                 "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
                 "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
-                "<li><button onclick='app.renderAll()()'>All </a></li>" +
-                "</ul>";
+                "<li><button onclick='app.renderAll()'>All </a></li>" +
+                "<li><button onclick='app.renderAddEvent()'>Add</button></li>"+
+                "</ul>"+
+                "</div>"+
+                "<div class='listWrapper'>";
             Object.keys(MemoryStore).forEach(function(event){
 
 
@@ -57,11 +59,12 @@ var app = {
                     '<ul>' +
                     '<li>' + MemoryStore[event].eventName + '<li>' +
                     '<li>' + MemoryStore[event].address + '</li>' + 
-                    '<li><a class="infoButton" onclick="app.renderEvent('+event+')">Info</a></li>' +
+                    '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' + 
+                    '<li> <a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                     '</ul>';
 
             });
-            html += "</div><div><button onclick='app.renderAddEvent()'>Add Event</button></div>";
+            html += "</div>";
             $('body').html(html);
 
         });
@@ -81,23 +84,29 @@ var app = {
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
-            "<div>" +
-            "<button onclick='app.renderHomeView()'>Back</button>" +
-            "<div>" +
+          
             "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
             "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
             "<li><button onclick='app.renderAll()'>All </a></li>" +
-            "</ul>";
+            "</ul>"+
+
+              "</div>"+
+              "<div class='listWrapper'>";
 
         thisWk.forEach(function(event){
             html +=
                 '<ul>' +
                 '<li>' + MemoryStore[event].eventName + '<li>' +
                 '<li>' + MemoryStore[event].address + '</li>' +
-                '<li><a class="infoButton" onclick="app.renderEvent('+event+')">Info</a></li>' +
+                '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' + 
+
+                '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                 '</ul>';
         }); 
-        html += "</div>";
+        html += 
+         
+            "<button onclick='app.renderHomeView()'>Back</button>" +
+            "</div>";
         $('body').html(html);
     },
 
@@ -115,22 +124,27 @@ var app = {
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
             "<div>" +
-            "<button onclick='app.renderHomeView()'>Back</button>" +
-            "<div>" +
             "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
             "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
-            "<li><button onclick='app.renderAll()()'>All </a></li>" +
-            "</ul>";
+            "<li><button onclick='app.renderAll()'>All </a></li>" +
+            "</ul>"+
+            "</div>"+
+            "<div class='listWrapper'>";
 
         wknd.forEach(function(event){
             html +=
                 '<ul>' +
                 '<li>' + MemoryStore[event].eventName + '<li>' +
                 '<li>' + MemoryStore[event].address + '</li>' +
-                '<li><a class="infoButton" onclick="app.renderEvent('+event+')">Info</a></li>' +
+                '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' + 
+
+                '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                 '</ul>';
         });
-        html += "</div>";
+        html += 
+           
+           "<button onclick='app.renderHomeView()'>Back</button>" +
+           "<div>" ;
         $('body').html(html);
 
 
@@ -144,23 +158,30 @@ var app = {
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
-            "<div>" +
-            "<button onclick='app.renderHomeView()'>Back</button>" +
-            "<div>" +
+        
+           
+   
             "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
             "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
             "<li><button onclick='app.renderAll()'>All </a></li>" +
-            "</ul>";
+            "</ul>"+
+            "</ul>"+
+            "</div>"+
+            "<div class='listWrapper'>";
 
         for ( var event in MemoryStore) {
             html +=
                 '<ul>' +
                 '<li>' + MemoryStore[event].eventName + '<li>' +
                 '<li>' + MemoryStore[event].address + '</li>' +
-                '<li><a class="infoButton" onclick="app.renderEvent()">Info</a></li>' +
+                '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' + 
+                '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                 '</ul>';
         }
-        html += "</div>";
+        html += 
+    
+         "<button onclick='app.renderHomeView()'>Back</button>"+
+         "</div>";
         $('body').html(html);
 
 
@@ -169,24 +190,22 @@ var app = {
     renderEvent: function(event) {
 
         var html =
-            "<div class='header'><h1>Lime Time</h1>" +
-            "<div><button onclick='app.renderHomeView()''>Back</button></a></div>" +
+            "<div class='header'>"+
+                "<h1>Lime Time</h1>" +
             "<div>" +
-            "<ul class='menuButtons'><li><a>This Week</a></li>" +
-            "<li><a>This Weekend</a></li>" +
-            "<li><a>All </a></li>" +
-            "</ul>" +
             "<div class=' eventWrapper'>" +
-            "<h3>" + MemoryStore[event].eventName + "</h3>" +
-            "<img src='http://blog.nomorefashionvictims.com/wp-content/uploads/2013/01/phagwa.jpg' alt='partyPic' width='250px' height='250px'>" +
-            '<ul class="eventDisplay">' +
-            '<li>' + MemoryStore[event].eventName + '</li>' +
-            '<li>' + MemoryStore[event].address + '</li>' +
-            '<li>' + MemoryStore[event].music + '</li>' +
-            '<li>' + MemoryStore[event].price + '</li>' +
-            '</ul>' +
+                "<div class='eventInfo'>"+
+                "<h3>" + MemoryStore[event].eventName + "</h3>" +
+                "<img class='eventImg' src='http://blog.nomorefashionvictims.com/wp-content/uploads/2013/01/phagwa.jpg' alt='partyPic' width='250px' height='250px'>" +
+                '<div class="eventDisplay">' +
+                '<p>' + MemoryStore[event].eventName + '</p>' +
+                '<p>' + MemoryStore[event].address + '</p>' +
+                '<p>' + MemoryStore[event].music + '</p>' +
+                '<p>' + MemoryStore[event].price + '</p>' +
+                "<div><button onclick='app.renderHomeView()''>Back</button></a></div>" +
+                "</div>"+
             "</div>";
-        $('body').html(html);
+        $('body').html(html); 
     },
 
     renderAddEvent: function() {

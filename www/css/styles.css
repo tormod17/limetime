@@ -1,9 +1,22 @@
+
+*{
+    font-family: 'Titillium Web', sans-serif;
+
+}
+
+body {
+
+        background-color: #00ff00;
+        box-sizing: border-box;
+        font-size: 1em;
+}
+
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color: white;
 }
 
 li {
@@ -30,11 +43,19 @@ li a:hover:not(.active) {
 }
 
 .infoButton{
-        color:grey;
+        color:black;
         background-color: light-grey;
         border:solid 1px black;
-        padding:2px;
+        padding:5px;
+        border-radius:15px;
+        width:75px;
 
+}
+.infoButton img {
+    width:10px;
+    height:10px;
+    margin-right: 10px;
+    background-color:light-grey;    
 }
 
 form input {
@@ -45,3 +66,32 @@ form input {
     display: block;
     position: relative;
 }
+
+button { 
+  
+    background-color:  #F8F8F8  ;
+    padding: 8px;
+    margin:3px;
+    font-size: 12px;
+    width:100px;
+}
+
+.listWrapper > ul li {
+margin: 1em 0.5em;
+
+
+}
+
+.listWrapper {
+  background-color: white;
+}
+
+.eventWrapper {
+    background-color: white;
+}
+.eventInfo {
+    margin:1em;
+    padding-top: 15px;
+    text-align: center;
+}
+.eventImg { border-radius: 150px }
