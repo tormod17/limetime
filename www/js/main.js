@@ -1,4 +1,5 @@
-MemoryStore = [];
+var MemoryStore = {};
+var event='';
 var firebaseDb = new Firebase("https://limetime.firebaseio.com/");
 
 var app = {
@@ -47,22 +48,23 @@ var app = {
                 "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
                 "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
                 "<li><button onclick='app.renderAll()'>All </a></li>" +
-            
+
                 "</ul>"+
                 "</div>"+
                 "<div class='listWrapper'>";
             Object.keys(MemoryStore).forEach(function(event){
 
 
-            
+
                 html +=
                     '<ul>' +
                     '<li>' + MemoryStore[event].eventName + '<li>' +
-                    '<li>' + MemoryStore[event].address + '</li>' + 
-                    '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' + 
-                    '<li> <a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" > Info</a></li>' +
+                    '<li>' + MemoryStore[event].address + '</li>' +
+                    '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' +
+                    '<li> <a class="infoButton" onclick="app.renderEvent('+event+')><img src="img/keyboard53.png" > Info</a></li>' +
                     '</ul>';
-
+                       console.log(event);
+                       console.log(MemoryStore);
             });
             html += "<button onclick='app.renderAddEvent()'>Add</button></div>";
             $('body').html(html);
@@ -70,7 +72,7 @@ var app = {
         });
     },
 
-    sortByTimeFunction: function(a, b) {    
+    sortByTimeFunction: function(a, b) {
         var dateA = new Date(a.dateTime).getTime();
         var dateB = new Date(b.dateTime).getTime();
         return dateA > dateB ? 1 : -1;
@@ -84,7 +86,7 @@ var app = {
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
-          
+
             "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
             "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
             "<li><button onclick='app.renderAll()'>All </a></li>" +
@@ -98,13 +100,13 @@ var app = {
                 '<ul>' +
                 '<li>' + MemoryStore[event].eventName + '<li>' +
                 '<li>' + MemoryStore[event].address + '</li>' +
-                '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' + 
+                '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' +
 
                 '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                 '</ul>';
-        }); 
-        html += 
-         
+        });
+        html +=
+
             "<button onclick='app.renderHomeView()'>Back</button>" +
             "</div>";
         $('body').html(html);
@@ -118,7 +120,7 @@ var app = {
         var wknd =thisWk.filter(function(event){
 
              return MemoryStore[event].dateTime.indexOf('Fri') > -1 || MemoryStore[event].dateTime.indexOf('Sat') > -1 || MemoryStore[event].dateTime.indexOf('Sun') > -1 ;
-  
+
          });
 
         var html =
@@ -136,13 +138,13 @@ var app = {
                 '<ul>' +
                 '<li>' + MemoryStore[event].eventName + '<li>' +
                 '<li>' + MemoryStore[event].address + '</li>' +
-                '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' + 
+                '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' +
 
                 '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                 '</ul>';
         });
-        html += 
-           
+        html +=
+
            "<button onclick='app.renderHomeView()'>Back</button>" +
            "<div>" ;
         $('body').html(html);
@@ -158,9 +160,9 @@ var app = {
 
         var html =
             "<div class='header'><h1>Lime Time</h1>" +
-        
-           
-   
+
+
+
             "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
             "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
             "<li><button onclick='app.renderAll()'>All </a></li>" +
@@ -174,21 +176,21 @@ var app = {
                 '<ul>' +
                 '<li>' + MemoryStore[event].eventName + '<li>' +
                 '<li>' + MemoryStore[event].address + '</li>' +
-                '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' + 
+                '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' +
                 '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
                 '</ul>';
         }
-        html += 
-    
+        html +=
+
          "<button onclick='app.renderHomeView()'>Back</button>"+
          "</div>";
         $('body').html(html);
 
-
+        console.log('EVENT', typeof(event));
     },
 
     renderEvent: function(event) {
-
+        console.log(event);
         var html =
             "<div class='header'>"+
                 "<h1>Lime Time</h1>" +
@@ -198,14 +200,14 @@ var app = {
                 "<h3>" + MemoryStore[event].eventName + "</h3>" +
                 "<img class='eventImg' src='http://blog.nomorefashionvictims.com/wp-content/uploads/2013/01/phagwa.jpg' alt='partyPic' width='250px' height='250px'>" +
                 '<div class="eventDisplay">' +
-                '<p>' + MemoryStore[event].eventName + '</p>' +
-                '<p>' + MemoryStore[event].address + '</p>' +
-                '<p>' + MemoryStore[event].music + '</p>' +
-                '<p>' + MemoryStore[event].price + '</p>' +
+                '<p>Event: ' + MemoryStore[event].eventName + '</p>' +
+                '<p>Address: ' + MemoryStore[event].address + '</p>' +
+                '<p>Music: ' + MemoryStore[event].music + '</p>' +
+                '<p>Price: ' + MemoryStore[event].price + '</p>' +
                 "<div><button onclick='app.renderHomeView()''>Back</button></a></div>" +
                 "</div>"+
             "</div>";
-        $('body').html(html); 
+        $('body').html(html);
     },
 
     renderAddEvent: function() {
@@ -256,12 +258,13 @@ var app = {
         var host = document.getElementById('host').value;
         var cellPhone = document.getElementById('cellPhone').value;
         var email = document.getElementById('email').value;
+        //var time = getNow()
 
 
-       //var firebaseDb = new Firebase("https://limetime.firebaseio.com/");
+      var firebaseDb = new Firebase("https://limetime.firebaseio.com/" + eventName )
 
 
-        firebaseDb.push({
+        firebaseDb.set({
             'eventName': eventName,
             'address': address,
             'music': music,
@@ -276,10 +279,6 @@ var app = {
 
     },
 
-    sendToDB: function() {
-
-
-    },
 
     slidePage: function(page) {
 
