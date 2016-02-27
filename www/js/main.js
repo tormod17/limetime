@@ -1,7 +1,24 @@
-var MemoryStore = {};
-var event='';
+
+
 var firebaseDb = new Firebase("https://limetime.firebaseio.com/");
 
+firebaseDb.on('value', function(snapshot) {
+    MemoryStore = snapshot.val();
+    console.log(MemoryStore);
+    return MemoryStore;
+
+});
+
+var header = "<div class='header'><h1>Lime Time</h1>" +
+
+             "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
+             "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
+             "<li><button onclick='app.renderAll()'>All </a></li>" +
+             "<li><button onclick='app.renderAddEvent()'>Add</button></div>"+
+             "</ul>"+
+
+              "</div>"+
+              "<div class='listWrapper'>";
 var app = {
 
     registerEvents: function() {
@@ -14,20 +31,30 @@ var app = {
         });
     },
 
+    createList: function(arr , obj){
+     var arr =  Object.keys(obj);
+     html = header;
 
-    getFirebase: function() {
+     arr.forEach(function(event){
+       console.log('obj', obj[event].eventName);
+        html +=
+       '<ul>' +
+           '<li>' + obj[event].eventName + '<li>' +
+           '<li>' + obj[event].address + '</li>' +
+           '<li>' + obj[event].dateTime.slice(0,4) + '</li>' +
+           '<li><a class="infoButton" id="'+event+'" onclick="app.renderEvent(this.id)"><img src="img/keyboard53.png" >Info</a></li>' +
+       '</ul>'
 
-        var MemoryStore = [];
 
-        firebaseDb.on('value', function(snapshot) {
-            MemoryStore = snapshot.val();
-            return MemoryStore;
+     });
+     html +=
 
-        });
+         "<button onclick='app.renderHomeView()'>Back</button>" +
+         "</div>";
+     $('body').html(html);
+   },
 
-    },
-
-    initialize: function() {
+   initialize: function() {
         var self = this;
         this.detailsURL = /^#employees\/(\d{1,})/;
         //this.registerEvents();
@@ -38,35 +65,15 @@ var app = {
 
     renderHomeView: function() {
 
-        var firebaseDb = new Firebase("https://limetime.firebaseio.com/");
+        var firebaseDb = new Firebase("https://limetime.firebaseio.com");
 
         firebaseDb.on('value', function(snapshot) {
             MemoryStore = snapshot.val();
+           console.log(MemoryStore);
 
-            var html =
-                "<div class='header'><h1>Lime Time</h1>" +
-                "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
-                "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
-                "<li><button onclick='app.renderAll()'>All </a></li>" +
+            app.createList(Object.keys(MemoryStore),MemoryStore);
 
-                "</ul>"+
-                "</div>"+
-                "<div class='listWrapper'>";
-            Object.keys(MemoryStore).forEach(function(event){
-
-
-
-                html +=
-                    '<ul>' +
-                    '<li>' + MemoryStore[event].eventName + '<li>' +
-                    '<li>' + MemoryStore[event].address + '</li>' +
-                    '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' +
-                    '<li> <a class="infoButton" onclick="app.renderEvent('+event+')><img src="img/keyboard53.png" > Info</a></li>' +
-                    '</ul>';
-                       console.log(event);
-                       console.log(MemoryStore);
-            });
-            html += "<button onclick='app.renderAddEvent()'>Add</button></div>";
+            html +=
             $('body').html(html);
 
         });
@@ -84,32 +91,9 @@ var app = {
 
         var thisWk = Object.keys(MemoryStore).slice(0, 7);
 
-        var html =
-            "<div class='header'><h1>Lime Time</h1>" +
+        app.createList(thisWk,MemoryStore)
 
-            "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
-            "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
-            "<li><button onclick='app.renderAll()'>All </a></li>" +
-            "</ul>"+
 
-              "</div>"+
-              "<div class='listWrapper'>";
-
-        thisWk.forEach(function(event){
-            html +=
-                '<ul>' +
-                '<li>' + MemoryStore[event].eventName + '<li>' +
-                '<li>' + MemoryStore[event].address + '</li>' +
-                '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' +
-
-                '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
-                '</ul>';
-        });
-        html +=
-
-            "<button onclick='app.renderHomeView()'>Back</button>" +
-            "</div>";
-        $('body').html(html);
     },
 
     thisWknd: function() {
@@ -122,93 +106,36 @@ var app = {
              return MemoryStore[event].dateTime.indexOf('Fri') > -1 || MemoryStore[event].dateTime.indexOf('Sat') > -1 || MemoryStore[event].dateTime.indexOf('Sun') > -1 ;
 
          });
+        app.createList(wknd,MemoryStore);
 
-        var html =
-            "<div class='header'><h1>Lime Time</h1>" +
-            "<div>" +
-            "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
-            "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
-            "<li><button onclick='app.renderAll()'>All </a></li>" +
-            "</ul>"+
-            "</div>"+
-            "<div class='listWrapper'>";
-
-        wknd.forEach(function(event){
-            html +=
-                '<ul>' +
-                '<li>' + MemoryStore[event].eventName + '<li>' +
-                '<li>' + MemoryStore[event].address + '</li>' +
-                '<li>' + MemoryStore[event].dateTime.slice(0,4) + '</li>' +
-
-                '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
-                '</ul>';
-        });
-        html +=
-
-           "<button onclick='app.renderHomeView()'>Back</button>" +
-           "<div>" ;
-        $('body').html(html);
-
-
-
-
-
-    },
+  },
 
     renderAll: function() {
-        Object.keys(MemoryStore).sort(this.sortByTimeFunction);
+      var sortedArr = Object.keys(MemoryStore).sort(this.sortByTimeFunction);
+      app.createList(sortedArr,MemoryStore);
 
-        var html =
-            "<div class='header'><h1>Lime Time</h1>" +
-
-
-
-            "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
-            "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
-            "<li><button onclick='app.renderAll()'>All </a></li>" +
-            "</ul>"+
-            "</ul>"+
-            "</div>"+
-            "<div class='listWrapper'>";
-
-        for ( var event in MemoryStore) {
-            html +=
-                '<ul>' +
-                '<li>' + MemoryStore[event].eventName + '<li>' +
-                '<li>' + MemoryStore[event].address + '</li>' +
-                '<li>' + MemoryStore[event].dateTime.slice(0,10) + '</li>' +
-                '<li><a class="infoButton" onclick="app.renderEvent('+event+')"><img src="img/keyboard53.png" >Info</a></li>' +
-                '</ul>';
-        }
-        html +=
-
-         "<button onclick='app.renderHomeView()'>Back</button>"+
-         "</div>";
-        $('body').html(html);
-
-        console.log('EVENT', typeof(event));
     },
 
     renderEvent: function(event) {
-        console.log(event);
-        var html =
-            "<div class='header'>"+
-                "<h1>Lime Time</h1>" +
-            "<div>" +
-            "<div class=' eventWrapper'>" +
-                "<div class='eventInfo'>"+
-                "<h3>" + MemoryStore[event].eventName + "</h3>" +
-                "<img class='eventImg' src='http://blog.nomorefashionvictims.com/wp-content/uploads/2013/01/phagwa.jpg' alt='partyPic' width='250px' height='250px'>" +
-                '<div class="eventDisplay">' +
-                '<p>Event: ' + MemoryStore[event].eventName + '</p>' +
-                '<p>Address: ' + MemoryStore[event].address + '</p>' +
-                '<p>Music: ' + MemoryStore[event].music + '</p>' +
-                '<p>Price: ' + MemoryStore[event].price + '</p>' +
-                "<div><button onclick='app.renderHomeView()''>Back</button></a></div>" +
-                "</div>"+
-            "</div>";
-        $('body').html(html);
-    },
+
+          var html =
+              "<div class='header'>"+
+                  "<h1>Lime Time</h1>" +
+              "<div>" +
+              "<div class=' eventWrapper'>" +
+                  "<div class='eventInfo'>"+
+                  "<h3>" + MemoryStore[event].eventName + "</h3>" +
+                  "<img class='eventImg' src='http://blog.nomorefashionvictims.com/wp-content/uploads/2013/01/phagwa.jpg' alt='partyPic' width='250px' height='250px'>" +
+                  '<div class="eventDisplay">' +
+                  '<p>' + MemoryStore[event].eventName + '</p>' +
+                  '<p>' + MemoryStore[event].address + '</p>' +
+                  '<p>' + MemoryStore[event].music + '</p>' +
+                  '<p>' + MemoryStore[event].price + '</p>' +
+                  "<div><button onclick='app.renderHomeView()''>Back</button></a></div>" +
+                  "</div>"+
+              "</div>";
+          $('body').html(html);
+      },
 
     renderAddEvent: function() {
         var html =
