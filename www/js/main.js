@@ -9,6 +9,21 @@ firebaseDb.on('value', function(snapshot) {
 
 });
 
+function allowDrop(ev) {
+     ev.preventDefault();
+}
+
+function drag(ev) {
+   ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+   ev.preventDefault();
+   var data = ev.dataTransfer.getData("text");
+   ev.target.appendChild(document.getElementById(data));
+}
+
+
 var header = "<div class='header'><h1>Lime Time</h1>" +
 
              "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
@@ -19,6 +34,10 @@ var header = "<div class='header'><h1>Lime Time</h1>" +
 
               "</div>"+
               "<div class='listWrapper'>";
+
+var emptyDiv ='<br><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>'
+var fillerDiv ='<br><div id="drag1"  draggable="true" ondragstart="drag(event)" width="336" height="69">BINGO</div>'
+
 var app = {
 
     registerEvents: function() {
@@ -33,17 +52,22 @@ var app = {
 
     createList: function(arr , obj){
      var arr =  Object.keys(obj);
-     html = header;
+     var html = header;
+
+
+
 
      arr.forEach(function(event){
        console.log('obj', obj[event].eventName);
         html +=
-       '<ul>' +
+       '<div  ondrop="drop(event)" ondragover="allowDrop(event) draggable="true" ondragstart="drag(event)" >'+
+        '<ul>' +
            '<li>' + obj[event].eventName + '<li>' +
            '<li>' + obj[event].address + '</li>' +
            '<li>' + obj[event].dateTime.slice(0,4) + '</li>' +
            '<li><a class="infoButton" id="'+event+'" onclick="app.renderEvent(this.id)"><img src="img/keyboard53.png" >Info</a></li>' +
-       '</ul>'
+       '</ul>'+
+       '</div>'
 
 
      });
@@ -51,6 +75,9 @@ var app = {
 
          "<button onclick='app.renderHomeView()'>Back</button>" +
          "</div>";
+
+     html += emptyDiv;
+     html += fillerDiv;
      $('body').html(html);
    },
 
