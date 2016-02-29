@@ -55,20 +55,20 @@ li a:hover:not(.active) {
     width:10px;
     height:10px;
     margin-right: 10px;
-    background-color:light-grey;    
+    background-color:light-grey;
 }
 
 form input {
     margin:1em;
 }
 
-.eventDisplay > li { 
+.eventDisplay > li {
     display: block;
     position: relative;
 }
 
-button { 
-  
+button {
+
     background-color:  #F8F8F8  ;
     padding: 8px;
     margin:3px;
@@ -95,3 +95,23 @@ margin: 1em 0.2em;
     text-align: center;
 }
 .eventImg { border-radius: 150px }
+
+#div1 {
+  width: 350px;
+  height: 70px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  background-color: white;
+}
+#drag1 {
+  width: 200px;
+  height: 35px;
+  padding: 10px;
+  border: 1px solid white;
+  background-color: lime
+}
+#listEvent {
+  margin:5px;
+    border: 1px solid lime ;
+
+}
