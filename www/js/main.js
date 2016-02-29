@@ -37,6 +37,7 @@ var header = "<div class='header'><h1>Lime Time</h1>" +
 
 var emptyDiv ='<br><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>'
 var fillerDiv ='<br><div id="drag1"  draggable="true" ondragstart="drag(event)" width="336" height="69">BINGO</div>'
+var html;
 
 var app = {
 
@@ -52,7 +53,7 @@ var app = {
 
     createList: function(arr , obj){
      var arr =  Object.keys(obj);
-     var html = header;
+   html = header;
 
 
 
@@ -60,7 +61,7 @@ var app = {
      arr.forEach(function(event){
        console.log('obj', obj[event].eventName);
         html +=
-       '<div  ondrop="drop(event)" ondragover="allowDrop(event) draggable="true" ondragstart="drag(event)" >'+
+       '<div  id="listEvent" draggable="true" ondragstart="drag(event)" >'+
         '<ul>' +
            '<li>' + obj[event].eventName + '<li>' +
            '<li>' + obj[event].address + '</li>' +
