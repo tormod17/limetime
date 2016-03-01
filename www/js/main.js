@@ -9,19 +9,8 @@ firebaseDb.on('value', function(snapshot) {
 
 });
 
-function allowDrop(ev) {
-     ev.preventDefault();
-}
 
-function drag(ev) {
-   ev.dataTransfer.setData("text", ev.target.id);
-}
 
-function drop(ev) {
-   ev.preventDefault();
-   var data = ev.dataTransfer.getData("text");
-   ev.target.appendChild(document.getElementById(data));
-}
 
 
 var header = "<div class='header'><h1>Lime Time</h1>" +
@@ -35,8 +24,6 @@ var header = "<div class='header'><h1>Lime Time</h1>" +
               "</div>"+
               "<div class='listWrapper'>";
 
-var emptyDiv ='<br><div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>'
-var fillerDiv ='<br><div id="drag1"  draggable="true" ondragstart="drag(event)" width="336" height="69">BINGO</div>'
 var html;
 
 var app = {
@@ -53,7 +40,7 @@ var app = {
 
     createList: function(arr , obj){
      var arr =  Object.keys(obj);
-   html = header;
+     html = header;
 
 
 
@@ -61,15 +48,12 @@ var app = {
      arr.forEach(function(event){
        console.log('obj', obj[event].eventName);
         html +=
-       '<div  id="listEvent" draggable="true" ondragstart="drag(event)" >'+
-        '<ul>' +
-           '<li>' + obj[event].eventName + '<li>' +
-           '<li>' + obj[event].address + '</li>' +
-           '<li>' + obj[event].dateTime.slice(0,4) + '</li>' +
-           '<li><a class="infoButton" id="'+event+'" onclick="app.renderEvent(this.id)"><img src="img/keyboard53.png" >Info</a></li>' +
-       '</ul>'+
-       '</div>'
-
+        '<ul id="sortable" class="unstyled">' +
+           '<li class="mysortable">' + obj[event].eventName + '<li>' +
+           '<li class="mysortable">' + obj[event].address + '</li>' +
+           '<li class="mysortable">' + obj[event].dateTime.slice(0,4) + '</li>' +
+           '<li class="mysortable"><a class="infoButton" id="'+event+'" onclick="app.renderEvent(this.id)"><img src="img/keyboard53.png" >Info</a></li>' +
+       '</ul>'
 
      });
      html +=
@@ -77,9 +61,37 @@ var app = {
          "<button onclick='app.renderHomeView()'>Back</button>" +
          "</div>";
 
-     html += emptyDiv;
-     html += fillerDiv;
-     $('body').html(html);
+;
+     $('#content').html(html);
+
+
+     $('#sortable').sortable({
+   revert: true,
+   update: function(event, ui){
+     if($(ui.item).hasClass('mysortable')){
+         // we don't add one if we're sorting a pre-existing item
+     } else {
+       $(ui.item).removeClass('ui-state-highlight');
+       $(ui.item).addClass('mysortable');
+
+       if($(ui.item).hasClass('textDrag')){
+         $(ui.item).html(textItem);
+       }
+       if($(ui.item).hasClass('imgDrag')){
+         $(ui.item).html(imgItem);
+       }
+     }
+   }
+ });
+ $('.draggable').draggable({
+       connectToSortable: "#sortable",
+       helper: "clone",
+       revert: "invalid"
+ });
+
+
+
+
    },
 
    initialize: function() {
@@ -101,8 +113,8 @@ var app = {
 
             app.createList(Object.keys(MemoryStore),MemoryStore);
 
-            html +=
-            $('body').html(html);
+
+            $('#content').html(html);
 
         });
     },
