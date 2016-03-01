@@ -15,7 +15,7 @@ firebaseDb.on('value', function(snapshot) {
 
 var header = "<div class='header'><h1>Lime Time</h1>" +
 
-             "<ul class='menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
+             "<ul class='unstyled menuButtons'><li><button onclick='app.thisWk()'>This Week</button></li>" +
              "<li><button onclick='app.thisWknd()'>This Weekend</button></li>" +
              "<li><button onclick='app.renderAll()'>All </a></li>" +
              "<li><button onclick='app.renderAddEvent()'>Add</button></div>"+
@@ -48,7 +48,7 @@ var app = {
      arr.forEach(function(event){
        console.log('obj', obj[event].eventName);
         html +=
-        '<ul id="sortable" class="unstyled">' +
+        '<ul id="sortable2" class="unstyled">' +
            '<li class="mysortable">' + obj[event].eventName + '<li>' +
            '<li class="mysortable">' + obj[event].address + '</li>' +
            '<li class="mysortable">' + obj[event].dateTime.slice(0,4) + '</li>' +
